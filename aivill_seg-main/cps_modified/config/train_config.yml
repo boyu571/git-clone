@@ -1,0 +1,48 @@
+DIRECTORY:
+  dataset: ./data # 수정 필
+
+TRAINER:
+  model: deeplabv3p
+  optimizer: adamw
+  learning_rate: 5.0e-4
+  n_epochs: 200
+  early_sopping_target: val_mIoU
+  early_stopping_patience: 10
+  early_stopping_mode: max #min
+  gpu: 2, 3
+  seed: 42
+  apply_aug: cutout
+  weak_threshold: 0.7
+  strong_threshold: 0.97
+  apply_reco: True
+  temp: 0.5
+  num_queries: 256
+  num_negatives: 512
+
+CPS:
+  model:
+  optimizer: 
+
+MODEL:
+  pre_model1: reco
+    num_labels: 5
+    output_dim: 256
+  pre_model2: cps
+    num_labels: 5
+    output_dim: 256
+  pre_model3: ps-mt
+    num_labels: 5
+    output_dim: 256
+
+DATALOADER:
+  batch_size: 5
+
+LOGGER:
+  wandb: True
+  logging_interval: 100
+  plot:
+    - loss
+    - mIoU
+    - elapsed_time
+
+
